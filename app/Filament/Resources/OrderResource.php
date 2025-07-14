@@ -22,6 +22,30 @@ class OrderResource extends Resource
 
     protected static ?string $navigationGroup = 'Ventas';
 
+    // Configurar búsqueda global
+    protected static ?string $recordTitleAttribute = 'order_number';
+    
+    public static function getGlobalSearchResultDetails($record): array
+    {
+        return [
+            'Mesa' => $record->table?->number ?? 'Sin mesa',
+            'Cliente' => $record->customer?->name ?? 'Sin cliente',
+            'Estado' => ucfirst($record->status),
+            'Total' => '$' . number_format($record->total, 2),
+        ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return [
+            'order_number',
+            'table.number', 
+            'customer.name',
+            'items.product.name',
+            'notes'
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -92,13 +116,23 @@ class OrderResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('order_number')
                     ->label('Número')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('table.number')
                     ->label('Mesa')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->label('Cliente')
+                    ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('items.product.name')
+                    ->label('Productos')
+                    ->searchable()
+                    ->limit(50)
+                    ->tooltip(function ($record) {
+                        return $record->items->pluck('product.name')->join(', ');
+                    }),
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Estado')
                     ->colors([
@@ -139,6 +173,13 @@ class OrderResource extends Resource
                         'ready' => 'Listo',
                         'delivered' => 'Entregado',
                         'cancelled' => 'Cancelado',
+                    ]),
+                Tables\Filters\SelectFilter::make('order_type')
+                    ->label('Tipo')
+                    ->options([
+                        'dine_in' => 'Para comer aquí',
+                        'takeaway' => 'Para llevar',
+                        'delivery' => 'Delivery',
                     ]),
             ])
             ->actions([

@@ -136,9 +136,9 @@
                                     🛒 Crear Nuevo Pedido
                                 </button>
                                 
-                                <a href="/dashboard" target="_blank"
+                                <a href="{{ route('filament.resources.orders.index') }}"
                                    class="block w-full bg-green-500 hover:bg-green-600 text-white text-center py-3 px-4 rounded-lg font-medium transition-colors">
-                                    🍕 Dashboard Operacional
+                                    📋 Ver Todas las Órdenes
                                 </a>
                             </div>
                         </div>

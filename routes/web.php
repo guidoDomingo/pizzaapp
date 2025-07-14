@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\OrderDashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +14,5 @@ use App\Http\Livewire\OrderDashboard;
 */
 
 Route::get('/', function () {
-    return redirect('/dashboard');
+    return redirect('/admin');
 });
-
-Route::get('/dashboard', OrderDashboard::class)->name('dashboard');
