@@ -72,41 +72,59 @@ class OrderCart extends Component
     public function createOrder()
     {
         if (!$this->selectedTable || empty($this->cart)) {
+            session()->flash('error', 'Selecciona una mesa y agrega productos al carrito.');
             return;
         }
 
-        $table = RestaurantTable::find($this->selectedTable);
-        
-        $order = Order::create([
-            'restaurant_id' => $table->restaurant_id,
-            'table_id' => $this->selectedTable,
-            'order_number' => 'ORD-' . time(),
-            'status' => 'pending',
-            'subtotal' => $this->getSubtotal(),
-            'tax' => $this->getTax(),
-            'total' => $this->getTotal(),
-        ]);
-
-        foreach ($this->cart as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'subtotal' => $item['price'] * $item['quantity']
+        try {
+            $table = RestaurantTable::find($this->selectedTable);
+            
+            // Get restaurant_id from table or use the first restaurant
+            $restaurantId = $table->restaurant_id ?? \App\Models\Restaurant::first()->id;
+            
+            $order = Order::create([
+                'restaurant_id' => $restaurantId,
+                'table_id' => $this->selectedTable,
+                'order_number' => 'ORD-' . time(),
+                'status' => 'pending', // Temporal: usar pending hasta migrar 'cart'
+                'order_type' => 'dine_in',
+                'subtotal' => $this->getSubtotal(),
+                'tax' => $this->getTax(),
+                'total' => $this->getTotal(),
             ]);
-        }
 
-        // Actualizar estado de la mesa
-        $table->update(['status' => 'occupied']);
+            foreach ($this->cart as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'unit_price' => $item['price'],
+                    'total_price' => $item['price'] * $item['quantity']
+                ]);
+            }
+
+            // Abrir modal de pago en lugar de crear directamente el pedido
+            $this->emit('openPaymentModal', $order->id);
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al crear el pedido: ' . $e->getMessage());
+        }
+    }
+
+    public function paymentCompleted($orderId)
+    {
+        // Actualizar estado de la mesa después del pago exitoso
+        if ($this->selectedTable) {
+            $table = RestaurantTable::find($this->selectedTable);
+            $table->update(['status' => 'occupied']);
+        }
 
         // Limpiar carrito
         $this->cart = [];
         $this->selectedTable = null;
         $this->showCart = false;
         
-        $this->emit('orderCreated', $order->id);
-        session()->flash('success', 'Pedido creado exitosamente: ' . $order->order_number);
+        session()->flash('success', 'Pedido y pago procesados exitosamente. La orden ha sido enviada a cocina.');
         
         $this->loadData();
     }

@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\Table as RestaurantTable;
 use App\Models\Employee;
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RestaurantSeeder extends Seeder
 {
@@ -152,6 +154,32 @@ class RestaurantSeeder extends Seeder
 
         foreach ($customers as $customerData) {
             Customer::create($customerData);
+        }
+
+        // Crear usuarios administradores
+        $users = [
+            [
+                'name' => 'Juan Pérez',
+                'email' => 'juan.perez@pizzaexpress.com',
+                'password' => Hash::make('password123'),
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Administrador',
+                'email' => 'admin@pizzaexpress.com',
+                'password' => Hash::make('admin123'),
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Super Admin',
+                'email' => 'super@pizzaexpress.com',
+                'password' => Hash::make('super123'),
+                'email_verified_at' => now(),
+            ],
+        ];
+
+        foreach ($users as $userData) {
+            User::firstOrCreate(['email' => $userData['email']], $userData);
         }
     }
 }

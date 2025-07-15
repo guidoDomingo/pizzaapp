@@ -23,6 +23,13 @@ class Order extends Model
         'tax',
         'discount',
         'total',
+        'amount_paid',
+        'change_amount',
+        'paid_at',
+        'payment_reference',
+        'payment_notes',
+        'ticket_number',
+        'ticket_printed',
         'payment_status',
         'payment_method',
         'notes',
@@ -35,7 +42,11 @@ class Order extends Model
         'subtotal' => 'decimal:2',
         'tax' => 'decimal:2',
         'discount' => 'decimal:2',
-        'total' => 'decimal:2'
+        'total' => 'decimal:2',
+        'amount_paid' => 'decimal:2',
+        'change_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+        'ticket_printed' => 'boolean'
     ];
 
     public function restaurant(): BelongsTo

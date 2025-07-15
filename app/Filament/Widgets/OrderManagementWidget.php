@@ -15,6 +15,8 @@ class OrderManagementWidget extends Widget
     protected int | string | array $columnSpan = 'full';
     
     protected static ?int $sort = 1;
+    
+    protected static ?string $heading = '🛒 Centro de Pedidos';
 
     public function getViewData(): array
     {

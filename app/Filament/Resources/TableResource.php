@@ -18,6 +18,8 @@ class TableResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     protected static ?string $navigationGroup = 'Gestión';
+    
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $modelLabel = 'Mesa';
 

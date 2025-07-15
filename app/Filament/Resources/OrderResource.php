@@ -20,7 +20,9 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Ventas';
+    protected static ?string $navigationGroup = 'Operaciones';
+    
+    protected static ?int $navigationSort = 3;
 
     // Configurar búsqueda global
     protected static ?string $recordTitleAttribute = 'order_number';
