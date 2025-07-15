@@ -18,6 +18,11 @@ Route::get('/', function () {
     return redirect('/admin');
 });
 
+// Ruta para el carrito de pedidos
+Route::get('/order-cart', function () {
+    return view('livewire.order-cart-page');
+})->name('order.cart');
+
 // Rutas para manejo de tickets
 Route::middleware(['auth'])->group(function () {
     Route::post('/tickets/regenerate/{order}', [TicketController::class, 'regenerateTicket'])->name('tickets.regenerate');

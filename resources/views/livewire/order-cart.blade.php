@@ -14,39 +14,39 @@
 
     <!-- Estadísticas rápidas -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <x-filament::card>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
             <div class="text-center">
                 <div class="text-2xl font-bold text-blue-600">{{ $tables->where('status', 'available')->count() }}</div>
                 <div class="text-sm text-gray-600">Mesas Disponibles</div>
             </div>
-        </x-filament::card>
+        </div>
         
-        <x-filament::card>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
             <div class="text-center">
                 <div class="text-2xl font-bold text-green-600">{{ count($cart) }}</div>
                 <div class="text-sm text-gray-600">Productos en Carrito</div>
             </div>
-        </x-filament::card>
+        </div>
         
-        <x-filament::card>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
             <div class="text-center">
                 <div class="text-2xl font-bold text-orange-600">${{ number_format($this->getSubtotal(), 2) }}</div>
                 <div class="text-sm text-gray-600">Subtotal</div>
             </div>
-        </x-filament::card>
+        </div>
         
-        <x-filament::card>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
             <div class="text-center">
                 <div class="text-2xl font-bold text-purple-600">${{ number_format($this->getTotal(), 2) }}</div>
                 <div class="text-sm text-gray-600">Total</div>
             </div>
-        </x-filament::card>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Selección de Mesas -->
         <div class="lg:col-span-3">
-            <x-filament::card>
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold flex items-center">
                         🪑 Seleccionar Mesa
@@ -79,12 +79,12 @@
                         @endforeach
                     </div>
                 </div>
-            </x-filament::card>
+            </div>
         </div>
 
         <!-- Menú de Productos -->
         <div class="lg:col-span-6">
-            <x-filament::card>
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
                 <div class="space-y-6">
                     <h3 class="text-lg font-semibold flex items-center">
                         🍕 Menú del Restaurante
@@ -131,13 +131,13 @@
                         </div>
                     @endforeach
                 </div>
-            </x-filament::card>
+            </div>
         </div>
 
         <!-- Carrito de Compras -->
         <div class="lg:col-span-3">
             <div class="sticky top-6">
-                <x-filament::card>
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
                     <div class="space-y-4">
                         <h3 class="text-lg font-semibold flex items-center">
                             🛒 Carrito de Compras
@@ -237,7 +237,7 @@
                             </div>
                         @endif
                     </div>
-                </x-filament::card>
+                </div>
             </div>
         </div>
     </div>
