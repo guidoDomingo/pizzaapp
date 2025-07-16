@@ -26,6 +26,7 @@ class Order extends Model
         'amount_paid',
         'change_amount',
         'paid_at',
+        'delivered_at',
         'payment_reference',
         'payment_notes',
         'ticket_number',
@@ -46,6 +47,7 @@ class Order extends Model
         'amount_paid' => 'decimal:2',
         'change_amount' => 'decimal:2',
         'paid_at' => 'datetime',
+        'delivered_at' => 'datetime',
         'ticket_printed' => 'boolean'
     ];
 
@@ -70,6 +72,11 @@ class Order extends Model
     }
 
     public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
